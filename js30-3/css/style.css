@@ -1,0 +1,14 @@
+
+.player{
+  width: 1000px;
+}
+.player__video{
+  width: 100%;
+}
+
+.player__controls{
+  visibility: hidden;
+}
+.controls{
+  display: flex;
+}
