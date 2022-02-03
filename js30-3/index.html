@@ -15,15 +15,19 @@
       <source src="https://mdn.github.io/learning-area/javascript/apis/video-audio/finished/video/sintel-short.webm" type="video/webm">
     </video>
     <div class="player__controls controls">
-      <button class="controls__play" >Play</button>
-      <button class="controls__mute">mute</button>
-      <div class="controls__volume">volume</div>
+      <button class="controls__play" ></button>
+      <button class="controls__mute"></button>
+      <div class="controls__volume">
+        <div class="controls__current-volume"></div>
+      </div>
 
       <div class="controls__current-time">
         <div></div>
         <span aria-label="timer">00:00</span>
       </div>
-      <div class="controls__progress">progress bar</div>
+      <div class="controls__progress">
+        <div class="controls__current-progress"></div>
+      </div>
       <div class="controls__remaining-time">
         <div></div>
         <span aria-label="timer">00:00</span>
@@ -32,7 +36,7 @@
         <div></div>
         <span aria-label="timer">00:00</span>
       </div>
-      <button class="controls__fullscreen">full</button>
+      <button class="controls__fullscreen"></button>
     </div>
   </div>
 
