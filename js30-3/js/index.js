@@ -6,10 +6,32 @@ const controls = player.querySelector('.player__controls');
 const volume = controls.querySelector('.controls__volume');
 const progress = controls.querySelector('.controls__progress');
 
-const play = player.querySelector('.player__play');
+const play = controls.querySelector('.controls__play');
+
+const currentTime = controls.querySelector('.controls__current-time');
+const durationTime = controls.querySelector('.controls__duration-time');
+const remainingTime = controls.querySelector('.controls__remaining-time');
+
 
 video.removeAttribute('controls');
 controls.style.visibility = 'visible';
+
+
+
+function getFormattedTime(time){
+  let minutes = Math.floor( time / 60 );
+  let seconds = Math.floor( time - 60 * minutes );
+
+  return `${("0"+minutes).slice(-2)}:${("0"+seconds).slice(-2)}`;
+}
+
+video.addEventListener('loadeddata', function() {
+
+  if(video.readyState >= 2) {
+    durationTime.innerText=getFormattedTime(video.duration);
+  }
+
+});
 
 
 volume.addEventListener('mousedown', function(event){
@@ -76,3 +98,22 @@ progress.addEventListener('mousedown', function(event){
 } );
 
 
+play.addEventListener('click', playPauseMedia);
+
+function playPauseMedia() {
+  if(video.paused) {
+    // play.setAttribute('data-icon','u');
+    video.play();
+  } else {
+    // play.setAttribute('data-icon','P');
+    video.pause();
+  }
+}
+
+video.addEventListener('timeupdate', (event) => {
+  // console.log(video.currentTime);
+
+  currentTime.innerText=getFormattedTime(video.currentTime);
+  remainingTime.innerText=getFormattedTime(Math.ceil(video.duration-video.currentTime));
+
+});
