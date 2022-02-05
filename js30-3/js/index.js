@@ -12,6 +12,8 @@ const currentTime = controls.querySelector('.controls__current-time');
 const durationTime = controls.querySelector('.controls__duration-time');
 const remainingTime = controls.querySelector('.controls__remaining-time');
 
+const mute = controls.querySelector('.controls__mute');
+const fullscreen = controls.querySelector('.controls__fullscreen');
 
 video.removeAttribute('controls');
 controls.style.visibility = 'visible';
@@ -29,6 +31,9 @@ video.addEventListener('loadeddata', function() {
 
   if(video.readyState >= 2) {
     durationTime.innerText=getFormattedTime(video.duration);
+
+    let currentValue = progress.querySelector(".controls__current-progress");
+    currentValue.style.width = video.currentTime+"px";
   }
 
 });
@@ -38,25 +43,47 @@ volume.addEventListener('mousedown', function(event){
 
   event.preventDefault(); // предотвратить запуск выделения (действие браузера по умолчанию) 
 
-  let currentPosX = event.pageX;
-  let currentValue = volume.querySelector(".controls__current-volume");
-  
-  currentValue.style.width = (currentPosX - volume.getBoundingClientRect().left) + "px";
+  let changeEvent = new CustomEvent("change", {
+    detail: { volume: 100 }
+  })
 
-  let currentValueWidth = currentValue.clientWidth;
+  let startCursorPosX = event.pageX;
+  let fullWidth = volume.getBoundingClientRect().width;
+
+  let currentValue = volume.querySelector(".controls__current-volume");
+
+  function getPosition(){
+    return currentValue.clientWidth;
+  }
+  function setPosition(pos){
+
+    if(pos<0) pos=0;
+    if(pos>fullWidth) pos=fullWidth;
+
+    currentValue.style.width = pos+"px";
+
+    let valuePercent = getPosition() /(fullWidth*0.01);
+
+    changeEvent.detail.volume = valuePercent;
+    volume.dispatchEvent(changeEvent);
+    console.log(valuePercent);
+  }
+
+  
+  setPosition(startCursorPosX - (volume.getBoundingClientRect().left + window.scrollX) );
+  
+  let currentValueWidth = getPosition();
 
   function onMouseMove(event){
-    // console.log(event.pageX);
-    let fullWidth = volume.getBoundingClientRect().width;
-    let newCurrentValueWidth = currentValueWidth + (event.pageX - currentPosX);
 
-    if (newCurrentValueWidth<0) currentValue.style.width=0;
-    currentValue.style.width = (newCurrentValueWidth <= fullWidth ? newCurrentValueWidth : fullWidth) + "px";
+    setPosition(currentValueWidth + (event.pageX - startCursorPosX));
+
   }
 
   document.addEventListener('mousemove', onMouseMove);
 
   document.addEventListener('mouseup', function(event){
+
     document.removeEventListener('mousemove', onMouseMove);
 
   }, {once : true});
@@ -64,31 +91,55 @@ volume.addEventListener('mousedown', function(event){
 
 
 } );
+
 
 
 progress.addEventListener('mousedown', function(event){
 
   event.preventDefault(); // предотвратить запуск выделения (действие браузера по умолчанию) 
 
-  let currentPosX = event.pageX;
-  let currentValue = progress.querySelector(".controls__current-progress");
-  
-  currentValue.style.width = (currentPosX - progress.getBoundingClientRect().left) + "px";
+  let changeEvent = new CustomEvent("change", {
+    detail: { currentTime: 0 }
+  })
 
-  let currentValueWidth = currentValue.clientWidth;
+  let startCursorPosX = event.pageX;
+  let fullWidth = progress.getBoundingClientRect().width;
+
+  let currentValue = progress.querySelector(".controls__current-progress");
+
+  function getPosition(){
+    return currentValue.clientWidth;
+  }
+  function setPosition(pos){
+
+    if(pos<0) pos=0;
+    if(pos>fullWidth) pos=fullWidth;
+
+    currentValue.style.width = pos+"px";
+
+    let valuePercent = getPosition() /(fullWidth*0.01);
+
+    // video.duration
+    changeEvent.detail.currentTime = valuePercent;
+    progress.dispatchEvent(changeEvent);
+    console.log(valuePercent);
+  }
+
+  
+  setPosition(startCursorPosX - (progress.getBoundingClientRect().left + window.scrollX) );
+  
+  let currentValueWidth = getPosition();
 
   function onMouseMove(event){
 
-    let fullWidth = progress.getBoundingClientRect().width;
-    let newCurrentValueWidth = currentValueWidth + (event.pageX - currentPosX);
+    setPosition(currentValueWidth + (event.pageX - startCursorPosX));
 
-    if (newCurrentValueWidth<0) currentValue.style.width=0;
-    currentValue.style.width = (newCurrentValueWidth <= fullWidth ? newCurrentValueWidth : fullWidth) + "px";
   }
 
   document.addEventListener('mousemove', onMouseMove);
 
   document.addEventListener('mouseup', function(event){
+
     document.removeEventListener('mousemove', onMouseMove);
 
   }, {once : true});
@@ -98,14 +149,13 @@ progress.addEventListener('mousedown', function(event){
 } );
 
 
+
 play.addEventListener('click', playPauseMedia);
 
 function playPauseMedia() {
   if(video.paused) {
-    // play.setAttribute('data-icon','u');
     video.play();
   } else {
-    // play.setAttribute('data-icon','P');
     video.pause();
   }
 }
@@ -116,4 +166,29 @@ video.addEventListener('timeupdate', (event) => {
   currentTime.innerText=getFormattedTime(video.currentTime);
   remainingTime.innerText=getFormattedTime(Math.ceil(video.duration-video.currentTime));
 
+  let fullWidth = progress.getBoundingClientRect().width;
+  let currentValue = progress.querySelector(".controls__current-progress");
+  let valuePercent =video.currentTime / video.duration;
+
+  currentValue.style.width = fullWidth*valuePercent + "px";
+
+});
+
+
+mute.addEventListener('click', function(e) {
+   video.muted = !video.muted;
+});
+
+fullscreen.addEventListener('click', function(e){
+  player.requestFullscreen();
+});
+
+
+volume.addEventListener("change", function(event) {
+  video.volume=event.detail.volume/100;
+});
+
+
+progress.addEventListener("change", function(event) {
+  video.currentTime=video.duration*(event.detail.currentTime/100);
 });
