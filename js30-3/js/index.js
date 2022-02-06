@@ -7,12 +7,13 @@ const volume = controls.querySelector('.controls__volume');
 const progress = controls.querySelector('.controls__progress');
 
 const play = controls.querySelector('.controls__play');
+const bigPlay = player.querySelector('.palyer__play-btn');
 
 const currentTime = controls.querySelector('.controls__current-time');
 const durationTime = controls.querySelector('.controls__duration-time');
 const remainingTime = controls.querySelector('.controls__remaining-time');
 
-const mute = controls.querySelector('.controls__mute');
+const sound = controls.querySelector('.controls__sound');
 const fullscreen = controls.querySelector('.controls__fullscreen');
 
 video.removeAttribute('controls');
@@ -32,8 +33,12 @@ video.addEventListener('loadeddata', function() {
   if(video.readyState >= 2) {
     durationTime.innerText=getFormattedTime(video.duration);
 
-    let currentValue = progress.querySelector(".controls__current-progress");
-    currentValue.style.width = video.currentTime+"px";
+    let currentPlayProgress = progress.querySelector(".controls__current-progress");
+    currentPlayProgress.style.width = video.currentTime+"px";
+
+    let currentVolume = volume.querySelector(".controls__current-volume");
+    currentVolume.style.width = video.volume * volume.getBoundingClientRect().width +"px";
+
   }
 
 });
@@ -151,14 +156,20 @@ progress.addEventListener('mousedown', function(event){
 
 
 play.addEventListener('click', playPauseMedia);
-
+bigPlay.addEventListener('click', playPauseMedia);
+video.addEventListener('click', playPauseMedia);
 function playPauseMedia() {
   if(video.paused) {
+    play.classList.add("controls__play--pause");
+    bigPlay.classList.add("palyer__play-btn--hidden");
     video.play();
   } else {
-    video.pause();
+    play.classList.remove("controls__play--pause");
+    bigPlay.classList.remove("palyer__play-btn--hidden");
+    video.pause();    
   }
 }
+
 
 video.addEventListener('timeupdate', (event) => {
   // console.log(video.currentTime);
@@ -175,17 +186,42 @@ video.addEventListener('timeupdate', (event) => {
 });
 
 
-mute.addEventListener('click', function(e) {
-   video.muted = !video.muted;
+sound.addEventListener('click', function(e) {
+  video.muted = !video.muted;
+  if(video.muted){
+    sound.classList.add("controls__sound--mute");    
+  }else{
+    sound.classList.remove("controls__sound--mute");      
+  }
 });
 
 fullscreen.addEventListener('click', function(e){
-  player.requestFullscreen();
+  if(player.requestFullscreen){
+    fullscreen.classList.add("controls__fullscreen--exit"); 
+    
+    player.requestFullscreen();
+  }
+  if (document.fullscreenElement || 
+      document.webkitFullscreenElement || 
+      document.mozFullScreenElement) {
+    document.exitFullscreen();
+    fullscreen.classList.remove("controls__fullscreen--exit");
+    
+  }
+
 });
 
 
 volume.addEventListener("change", function(event) {
   video.volume=event.detail.volume/100;
+  if(video.volume>0){
+    video.muted=false;
+    sound.classList.remove("controls__sound--mute");
+    
+  }else{
+    video.muted=true;
+    sound.classList.add("controls__sound--mute");
+  }
 });
 
 

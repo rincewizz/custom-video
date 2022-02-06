@@ -6,6 +6,31 @@
 .player__video{
   width: 100%;
 }
+.palyer__play-btn{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 15%;
+  height: auto;
+  border: none;
+  background-size: contain;
+  transition: .5s;
+  cursor: pointer;
+  background: url(../img/big-play.svg) center no-repeat;
+  filter: grayscale(0.9) opacity(0.9);
+  opacity: 1;
+  visibility: visible;
+}
+.palyer__play-btn:hover{
+  filter: unset;
+}
+.palyer__play-btn--hidden{
+  opacity: 0;
+  visibility: hidden;
+}
 
 .player__controls{
   visibility: hidden;
@@ -35,19 +60,36 @@
   gap: 10px;
 
 }
-.controls__play{
+.controls__btn{
   width: 40px;
   height: 40px;
   border: none;
-  background: url(../img/play.svg) center;
   background-size: contain;
+  border-radius: 100%;
+  transition: .5s;
+  cursor: pointer;
 }
-.controls__mute{
-  width: 40px;
-  height: 40px;
-  border: none;
-  background: url(../img/volume.svg) center;
-  background-size: contain;
+.controls__btn:hover{
+  box-shadow: 0px 0px 5px 5px #797979;
+  background-color: #797979;
+}
+.controls__play{
+  background: url(../img/play.svg#play) center no-repeat;
+}
+.controls__play--pause{
+  background: url(../img/play.svg#pause) center no-repeat;
+}
+.controls__sound{
+  background: url(../img/volume.svg#unmute) center no-repeat;
+}
+.controls__sound--mute{
+  background: url(../img/volume.svg#mute) center no-repeat;
+}
+.controls__fullscreen{
+  background: url(../img/maximize.svg#maximize) center no-repeat;
+}
+.controls__fullscreen--exit{
+  background: url(../img/maximize.svg#minimize) center no-repeat;
 }
 .controls__volume{
   width: 80px;
@@ -61,7 +103,7 @@
 .controls__current-volume{
   position: absolute;
   height: 100%;
-  width: 50%;
+  width: 100%;
   max-width: 100%;
   background: #ffffff;
   border-radius: 11px;
@@ -93,7 +135,7 @@
 .controls__current-progress{
   position: absolute;
   height: 100%;
-  width: 50%;
+  width: 0;
   max-width: 100%;
   background: #ffffff;
   border-radius: 11px;
@@ -109,11 +151,4 @@
   right: -8px;
   top: -4px;
   border-radius: 100%;
-}
-.controls__fullscreen{
-  width: 40px;
-  height: 40px;
-  border: none;
-  background: url(../img/maximize.svg) center;
-  background-size: contain;
 }
