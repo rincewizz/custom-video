@@ -94,7 +94,7 @@ volume.addEventListener('pointerdown', function(event){
 
     changeEvent.detail.volume = valuePercent;
     volume.dispatchEvent(changeEvent);
-    console.log(valuePercent);
+    // console.log(valuePercent);
   }
 
   
@@ -117,9 +117,7 @@ volume.addEventListener('pointerdown', function(event){
   }, {once : true});
 
 
-
 } );
-
 
 
 progress.addEventListener('pointerdown', function(event){
@@ -147,11 +145,10 @@ progress.addEventListener('pointerdown', function(event){
     currentValue.style.width = pos+"px";
 
     let valuePercent = getPosition() /(fullWidth*0.01);
-
     // video.duration
     changeEvent.detail.currentTime = valuePercent;
     progress.dispatchEvent(changeEvent);
-    console.log(valuePercent);
+    // console.log(valuePercent);
   }
 
   
@@ -177,8 +174,6 @@ progress.addEventListener('pointerdown', function(event){
 
 } );
 
-
-
 play.addEventListener('click', playPauseMedia);
 bigPlay.addEventListener('click', playPauseMedia);
 video.addEventListener('click', playPauseMedia);
@@ -199,7 +194,6 @@ function playPauseMedia() {
 
 video.addEventListener('timeupdate', (event) => {
   // console.log(video.currentTime);
-
   currentTime.innerText=getFormattedTime(video.currentTime);
   remainingTime.innerText=getFormattedTime(Math.ceil(video.duration-video.currentTime));
 
@@ -213,11 +207,17 @@ video.addEventListener('timeupdate', (event) => {
 
 
 sound.addEventListener('click', function(e) {
-  video.muted = !video.muted;
+  // video.muted = !video.muted;
+  let currentVolume = volume.querySelector(".controls__current-volume");
   if(video.muted){
-    sound.classList.add("controls__sound--mute");    
+    video.muted = false;
+    sound.classList.remove("controls__sound--mute"); 
+    currentVolume.style.width = video.volume * volume.getBoundingClientRect().width +"px";      
   }else{
-    sound.classList.remove("controls__sound--mute");      
+    video.muted = true;
+    sound.classList.add("controls__sound--mute");
+    currentVolume.style.width = 0;
+         
   }
 });
 
@@ -242,8 +242,7 @@ volume.addEventListener("change", function(event) {
   video.volume=event.detail.volume/100;
   if(video.volume>0){
     video.muted=false;
-    sound.classList.remove("controls__sound--mute");
-    
+    sound.classList.remove("controls__sound--mute");    
   }else{
     video.muted=true;
     sound.classList.add("controls__sound--mute");
