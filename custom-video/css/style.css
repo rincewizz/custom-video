@@ -1,10 +1,22 @@
 
+body{
+  background: #2e2e2e;
+}
+
 .player{
   width: 1000px;
   position: relative;
+  margin: 0 auto;
+  display: flex;
+  align-content: center;
+  background: #000;
+}
+.player--nocursor{
+  cursor: none;
 }
 .player__video{
   width: 100%;
+  aspect-ratio: 16 / 9;
 }
 .palyer__play-btn{
   position: absolute;
@@ -32,9 +44,7 @@
   visibility: hidden;
 }
 
-.player__controls{
-  visibility: hidden;
-}
+
 .controls{
   display: flex;
   align-items: center;
@@ -58,7 +68,14 @@
   line-height: 17px;
   color: #FFFFFF;
   gap: 10px;
+  visibility: visible;
+  opacity: 1;
+  transition: 0.5s;
 
+}
+.controls--hidden{
+  opacity: 0;
+  visibility: hidden;
 }
 .controls__btn{
   width: 40px;

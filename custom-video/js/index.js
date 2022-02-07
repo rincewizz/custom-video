@@ -16,8 +16,10 @@ const remainingTime = controls.querySelector('.controls__remaining-time');
 const sound = controls.querySelector('.controls__sound');
 const fullscreen = controls.querySelector('.controls__fullscreen');
 
+let mouseTimer = null;
+
 video.removeAttribute('controls');
-controls.style.visibility = 'visible';
+controls.classList.remove("controls--hidden");
 
 
 
@@ -26,6 +28,25 @@ function getFormattedTime(time){
   let seconds = Math.floor( time - 60 * minutes );
 
   return `${("0"+minutes).slice(-2)}:${("0"+seconds).slice(-2)}`;
+}
+
+function hideControls(){
+  clearTimeout(mouseTimer);
+  controls.classList.remove("controls--hidden");
+  hideCursor(false);
+  if(!video.paused) {
+    mouseTimer = setTimeout(() => {
+        controls.classList.add("controls--hidden");
+        hideCursor(true);
+    }, 3000);
+  }
+}
+function hideCursor(hide){
+  if(hide){
+    player.classList.add("player--nocursor");
+  }else{
+    player.classList.remove("player--nocursor");
+  }
 }
 
 video.addEventListener('loadeddata', function() {
@@ -43,6 +64,7 @@ video.addEventListener('loadeddata', function() {
 
 });
 
+player.addEventListener('mousemove', hideControls);
 
 volume.addEventListener('mousedown', function(event){
 
@@ -166,8 +188,10 @@ function playPauseMedia() {
   } else {
     play.classList.remove("controls__play--pause");
     bigPlay.classList.remove("palyer__play-btn--hidden");
-    video.pause();    
+    video.pause();
+    hideCursor(false);
   }
+  hideControls();
 }
 
 
@@ -197,9 +221,9 @@ sound.addEventListener('click', function(e) {
 
 fullscreen.addEventListener('click', function(e){
   if(player.requestFullscreen){
-    fullscreen.classList.add("controls__fullscreen--exit"); 
-    
+    fullscreen.classList.add("controls__fullscreen--exit");     
     player.requestFullscreen();
+
   }
   if (document.fullscreenElement || 
       document.webkitFullscreenElement || 
