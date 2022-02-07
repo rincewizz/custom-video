@@ -64,11 +64,12 @@ video.addEventListener('loadeddata', function() {
 
 });
 
-player.addEventListener('mousemove', hideControls);
+player.addEventListener('pointermove', hideControls);
 
-volume.addEventListener('mousedown', function(event){
+volume.addEventListener('pointerdown', function(event){
 
   event.preventDefault(); // предотвратить запуск выделения (действие браузера по умолчанию) 
+  if(event.which != 1) return
 
   let changeEvent = new CustomEvent("change", {
     detail: { volume: 100 }
@@ -107,11 +108,11 @@ volume.addEventListener('mousedown', function(event){
 
   }
 
-  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('pointermove', onMouseMove);
 
-  document.addEventListener('mouseup', function(event){
+  document.addEventListener('pointerup', function(event){
 
-    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('pointermove', onMouseMove);
 
   }, {once : true});
 
@@ -121,9 +122,10 @@ volume.addEventListener('mousedown', function(event){
 
 
 
-progress.addEventListener('mousedown', function(event){
-
+progress.addEventListener('pointerdown', function(event){
   event.preventDefault(); // предотвратить запуск выделения (действие браузера по умолчанию) 
+
+  if(event.which != 1) return
 
   let changeEvent = new CustomEvent("change", {
     detail: { currentTime: 0 }
@@ -163,11 +165,11 @@ progress.addEventListener('mousedown', function(event){
 
   }
 
-  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('pointermove', onMouseMove);
 
-  document.addEventListener('mouseup', function(event){
+  document.addEventListener('pointerup', function(event){
 
-    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('pointermove', onMouseMove);
 
   }, {once : true});
 
