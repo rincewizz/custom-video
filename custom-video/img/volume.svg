@@ -1,0 +1,40 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+    <style>
+    .img { display: none }
+    .img:target { display: inline }
+    </style>
+</defs>
+<g id="unmute" class="img">
+    <path d="M14.6667 6.66669L8.00002 12H2.66669V20H8.00002L14.6667 25.3334V6.66669Z" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M25.4266 6.5733C27.9262 9.07367 29.3305 12.4644 29.3305 16C29.3305 19.5355 27.9262 22.9263 25.4266 25.4266M20.72 11.28C21.9698 12.5302 22.6719 14.2255 22.6719 15.9933C22.6719 17.7611 21.9698 19.4565 20.72 20.7066" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<g id="mute" class="img">
+  <path
+     d="M14.6667 6.66669L8.00002 12H2.66669V20H8.00002L14.6667 25.3334V6.66669Z"
+     stroke="white"
+     stroke-width="3"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     id="path2"
+     style="fill:#ffffff" />
+  <rect
+     style="opacity:0.999;fill:#ffffff;fill-rule:evenodd;stroke-width:1.5"
+     id="rect1315-3"
+     width="2.4259343"
+     height="13.304305"
+     x="-29.850349"
+     y="-8.3736324"
+     ry="1.2129672"
+     transform="matrix(-0.80761113,-0.58971541,-0.58971541,0.80761113,0,0)" />
+  <rect
+     style="opacity:0.999;fill:#ffffff;fill-rule:evenodd;stroke-width:1.5"
+     id="rect1315-3-6"
+     width="2.4259343"
+     height="13.304305"
+     x="9.1460457"
+     y="20.101427"
+     ry="1.2129672"
+     transform="rotate(-36.136815)" />
+</g>
+</svg>
